@@ -25,7 +25,7 @@ http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfd
         <batch:process-records>
             <batch:step name="foreachUserFetchSalesforceStep">
                 <enricher source="#[payload]" target="#[recordVars['accountInSalesforce']]" doc:name="store result in record var 'accountInSalesforce'">
-                    <sfdc:query-single config-ref="Salesforce" query="SELECT Id, Name FROM Account WHERE Name = '#[payload.Name]'"  doc:name="query Salesforce for current Account"/>
+                    <sfdc:query-single config-ref="Salesforce" query="SELECT Id, Name FROM Account WHERE Name = &quot;#[payload.Name]&quot;"  doc:name="query Salesforce for current Account"/>
                 </enricher>
             </batch:step>    
             <batch:step name="selectNewerAccountStep" accept-expression="!(recordVars['accountInSalesforce'] is NullPayload)">
