@@ -29,7 +29,7 @@ Here you should not:
         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_GETLIST" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="query customers from SAP">
             <sap:definition><![CDATA[<jco>
 	<import>
-		<field name="MAXROWS"></field>
+		<field name="MAXROWS">5</field>
 	</import>
   	<tables>
 	    <table name="IDRANGE">
