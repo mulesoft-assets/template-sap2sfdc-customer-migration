@@ -26,7 +26,8 @@ Note that using this template is subject to the conditions of this [License Agre
 Please review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule ESB Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
 
 # Use Case <a name="usecase"/>
-WE NEED A NICE GUY WHO WRITE THIS FOR US!!!!
+Use this template if would like to sync Customers from SAP to Salesforce Accounts in manner one time synchronization hitting the Http endpoint 
+			Inboud SAP endpoint retrieves all Accounts in SAP using standard BAPI  **BAPI_CUSTOMER_GETLIST** and transforms them to Salesforce Accounts
 
 # Considerations <a name="considerations"/>
 
@@ -193,20 +194,17 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + mail.to=your.email@gmail.com
 + mail.subject=Mail subject
 
-# policy for creating accounts in SF syncAccount, assignDummyAccount, doNotCreateAccount
-+ account.sync.policy=syncAccount
-
 # API Calls <a name="apicalls"/>
 SalesForce imposes limits on the number of API Calls that can be made.
 Therefore calculating this amount may be an important factor to
-consider. Product Broadcast Template calls to the API can be
+consider. Customer migration template calls to the API can be
 calculated using the formula:
 
 **X / 200**
 
-Being X the number of Products to be synchronized on each run.
+Being X the number of Accounts to be synchronized on each run.
 
-The division by 200 is because, by default, Users are gathered in groups
+The division by 200 is because, by default, Accounts are gathered in groups
 of 200 for each Upsert API Call in the commit step. Also consider
 that this calls are executed repeatedly every polling cycle.
 
