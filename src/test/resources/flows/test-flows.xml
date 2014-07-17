@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
     <data-mapper:config name="BAPI_CUSTOMER_GETINTNUMBER_to_Customr_Number" transformationGraphPath="bapi_customer_getintnumber_to_customr_number.grf" doc:name="DataMapper"/>
     <data-mapper:config name="Salesfore_Account_to_DEBMAS01" transformationGraphPath="salesfore_account_to_debmas01.grf" doc:name="DataMapper"/>
     <sub-flow name="createAccountSapFlow" doc:name="createAccountSapFlow">
-        <logger level="INFO" doc:name="Logger" message="5555555555555555555555555 #[payload]"/>
+        <logger level="INFO" doc:name="Logger" message="#[payload]"/>
         
 		<processor-chain doc:name="Processor Chain">
 			<sap:outbound-endpoint exchange-pattern="request-response"
