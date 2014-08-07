@@ -6,7 +6,7 @@
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
       xmlns:spring="http://www.springframework.org/schema/beans"
-      version="EE-3.5.0"
+      version="EE-3.5.1"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
@@ -24,25 +24,18 @@ http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfd
         </batch:input>
         <batch:process-records>
             <batch:step name="foreachUserFetchSalesforceStep">
-                <expression-component doc:name="Expression"><![CDATA[// TODO removed single quote as the salesforce query will then crash
+                <expression-component doc:name="Sanitize Name"><![CDATA[// TODO removed single quote as the salesforce query will then crash
 payload.put('Name', payload.get('Name').replaceAll("'", " "));]]></expression-component>
                 <enricher source="#[payload]" target="#[recordVars['accountInSalesforce']]" doc:name="store result in record var 'accountInSalesforce'">
                     <sfdc:query-single config-ref="Salesforce" query="SELECT Id, Name FROM Account WHERE Name = '#[payload.Name]'"  doc:name="query Salesforce for current Account"/>
                 </enricher>
-            </batch:step>    
-            <batch:step name="selectNewerAccountStep" accept-expression="!(recordVars['accountInSalesforce'] is NullPayload)">
-                <choice doc:name="Choice">
-                    <when expression="#[true]">
-                        <expression-component doc:name="define Id in SalesForce Instance"><![CDATA[payload['Id'] = recordVars['accountInSalesforce']['Id']]]></expression-component>
-                    </when>
-                    <otherwise>
-                        <set-payload doc:name="set to null to skip this account" value="#[return null]"/>
-                    </otherwise>
-                </choice>
-            </batch:step>              
+            </batch:step>
+              
             <batch:step name="createAccountsInSalesforceStep" accept-expression="!(payload is NullPayload)">
 
-                <expression-component doc:name=" prepare to upsert"><![CDATA[// changing type of field NumberOfEmployees to int
+                <expression-component doc:name=" prepare to upsert"><![CDATA[payload['Id'] = recordVars['accountInSalesforce'] is NullPayload ? null : recordVars['accountInSalesforce']['Id'];
+
+// changing type of field NumberOfEmployees to int
 if (payload.get('NumberOfEmployees') == null) {
 	payload.remove('NumberOfEmployees') 
 } else {
