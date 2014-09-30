@@ -27,7 +27,7 @@ Please review the terms of the license before downloading and using this templat
 
 # Use Case <a name="usecase"/>
 Use this template if would like to sync Customers from SAP to Salesforce Accounts in manner one time synchronization hitting the Http endpoint 
-			Inboud SAP endpoint retrieves all Accounts in SAP using standard BAPI  **BAPI_CUSTOMER_GETLIST** and transforms them to Salesforce Accounts
+			SAP connector retrieves all Customers in SAP using standard BAPI  **BAPI_CUSTOMER_GETLIST** and transforms them to Salesforce Accounts
 
 # Considerations <a name="considerations"/>
 
@@ -64,8 +64,7 @@ RFC SDK is used to register program ID on gateway. Same program ID name is used 
 3. Partner port
 Partner port needs to be defined type of Idoc of SAP release 4.x as its version. As RFC destination same RFC destination created earlier is used.
 
-4. Partner profile
-Partner profile needs to be customized type of logical system as partner type. Outbound parameter of message type MATMAS is defined in the partner profile. As receiver port an RFC destination created earlier is used. Idoc Type MATMAS01 is defined.
+
 
 ## Salesforce Considerations <a name="salesforceconsiderations"/>
 
@@ -90,19 +89,7 @@ In order to have this template working as expected, you should be aware of your 
 
 ### As destination of data
 
-This template makes use of the `External ID` field offered by Salesforce. Here is a short description on how SFDC define external ID's 
-
-+ [What is an external ID?](http://help.salesforce.com/apex/HTViewHelpDoc?id=faq_import_general_what_is_an_external.htm)
-
-The templates uses the External ID in order to do xRef between the entities in both systems. The idea is, once an entity is created in SFDC it's decorated with an ID from the source system which will be used afteward for the template to reference it.
-
-You will need to create a new custom field in your **Product** entity in SFDC with the following name: 
-
-+ `sap_external_id`
-
-For instructions on how to create a custom field in SFDC plase check this link:
-
-+ [Create Custom Fields](http://www.salesforce.com/smallbusinesscenter/faq/customize.jsp#customfield)
+&nbsp;
 
 
 
@@ -205,9 +192,7 @@ calculated using the formula:
 Being X the number of Accounts to be synchronized on each run.
 
 The division by 200 is because, by default, Accounts are gathered in groups
-of 200 for each Upsert API Call in the commit step. Also consider
-that this calls are executed repeatedly every polling cycle.
-
+of 200 for each Upsert API Call in the commit step. 
 For instance if 10 records are fetched from origin instance, then 1 api
 calls to SFDC will be made ( 1).
 
