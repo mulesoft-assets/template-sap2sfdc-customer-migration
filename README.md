@@ -53,18 +53,9 @@ There may be a few things that you need to know regarding SAP, in order for this
 
 ### As source of data
 
-In order for this Anypoint Template to work, there are a few things that needs to be done in SAP first.
-
-1. RFC destination
-RFC destination of type "TCP/IP Connection" pointing to program ID on gateway needs to be created. The destination uses Unicode communication type with target system.
-
-2. Program ID registration
-RFC SDK is used to register program ID on gateway. Same program ID name is used here as in the RFC destination.
-
-3. Partner port
-Partner port needs to be defined type of Idoc of SAP release 4.x as its version. As RFC destination same RFC destination created earlier is used.
-
-
+SAP backend system is used as data source for migration.
+Data is read by RFC call of BAPI function to SAP.
+SAP Connector needs to be properly customized as per chapter: [Properties to be configured](#propertiestobeconfigured)
 
 ## Salesforce Considerations <a name="salesforceconsiderations"/>
 

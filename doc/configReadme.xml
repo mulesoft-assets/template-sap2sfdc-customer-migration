@@ -26,6 +26,13 @@ You will find that there are three dependencies in the pom.xml file that begin w
 These dependencies are private for Mulesoft and will cause you application not to build from a Maven command line. You need to replace them with "provided" scope and copy the libraries into the build path.
 ]]>
 		</section>
+		<section id="default_sap_src">
+$H$H# As source of data
+
+SAP backend system is used as data source for migration.
+Data is read by RFC call of BAPI function to SAP.
+SAP Connector needs to be properly customized as per chapter: [Properties to be configured](#propertiestobeconfigured)
+		</section>
 		<section id="sfdc_dst">
 		<![CDATA[
 			&nbsp;			
