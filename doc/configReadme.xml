@@ -26,12 +26,6 @@ You will find that there are three dependencies in the pom.xml file that begin w
 These dependencies are private for Mulesoft and will cause you application not to build from a Maven command line. You need to replace them with "provided" scope and copy the libraries into the build path.
 ]]>
 		</section>
-		<section id="sap_src">
-<![CDATA[
-4. Partner profile
-Partner profile needs to be customized type of logical system as partner type. Outbound parameter of message type MATMAS is defined in the partner profile. As receiver port an RFC destination created earlier is used. Idoc Type MATMAS01 is defined.
-]]>
-		</section>
 		<section id="sfdc_dst">
 		<![CDATA[
 This template makes use of the `External ID` field offered by Salesforce. Here is a short description on how SFDC define external ID's 
@@ -67,13 +61,6 @@ Please check this Documentation Page:
 + sap.jco.sysnr=14
 + sap.jco.client=800
 + sap.jco.lang=EN
-
-**SAP Endpoint configuration**
-
-+ sap.jco.connectioncount=2
-+ sap.jco.gwhost=your.sap.addres.com
-+ sap.jco.gwservice=sapgw14
-+ sap.jco.idoc.programid=PROGRAM_ID
 
 **SalesForce Connector configuration**
 
