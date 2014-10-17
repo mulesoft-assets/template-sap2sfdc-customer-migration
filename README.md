@@ -53,9 +53,10 @@ There may be a few things that you need to know regarding SAP, in order for this
 
 ### As source of data
 
-SAP backend system is used as data source for migration.
-Data is read by RFC call of BAPI function to SAP.
-SAP Connector needs to be properly customized as per chapter: [Properties to be configured](#propertiestobeconfigured)
+SAP backend system is used as source of data. SAP Connector is used to send and receive the data from the SAP backend. 
+The connector can either use RFC calls of BAPI functions and/or IDoc messages for data exchange and needs to be properly customized as per chapter: [Properties to be configured](#propertiestobeconfigured)
+
+
 
 ## Salesforce Considerations <a name="salesforceconsiderations"/>
 
@@ -81,6 +82,7 @@ In order to have this template working as expected, you should be aware of your 
 ### As destination of data
 
 &nbsp;
+
 
 
 
@@ -146,13 +148,6 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sap.jco.sysnr=14
 + sap.jco.client=800
 + sap.jco.lang=EN
-
-**SAP Endpoint configuration**
-
-+ sap.jco.connectioncount=2
-+ sap.jco.gwhost=your.sap.addres.com
-+ sap.jco.gwservice=sapgw14
-+ sap.jco.idoc.programid=PROGRAM_ID
 
 **SalesForce Connector configuration**
 
