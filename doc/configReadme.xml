@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <configuration>
 	<placeholders>
-		<placeholder id="template_name">SAP2SFDC-customer-migration</placeholder>
+		<placeholder id="template_name">SAP to Salesforce Customer Migration</placeholder>
 	</placeholders>
 	<sections>
 		<section id="use_case">
-			Use this template if would like to sync Customers from SAP to Salesforce Accounts in manner one time synchronization hitting the Http endpoint 
-			SAP connector retrieves all Customers in SAP using standard BAPI  **BAPI_CUSTOMER_GETLIST** and transforms them to Salesforce Accounts
+Use this template if would like to sync Customers from SAP to Salesforce Accounts in manner one time synchronization hitting the Http endpoint 
+SAP connector retrieves all Customers in SAP using standard BAPI  **BAPI_CUSTOMER_GETLIST** and transforms them to Salesforce Accounts
 		</section>
 		<section id="considerations">
 		<![CDATA[
