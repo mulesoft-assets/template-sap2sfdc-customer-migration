@@ -5,8 +5,17 @@
 	</placeholders>
 	<sections>
 		<section id="use_case">
-Use this template if would like to sync Customers from SAP to Salesforce Accounts in manner one time synchronization hitting the Http endpoint 
-SAP connector retrieves all Customers in SAP using standard BAPI  **BAPI_CUSTOMER_GETLIST** and transforms them to Salesforce Accounts
+This Anypoint Template should serve as a foundation for setting an offline migration of Customers from SAP to Salesforce Accounts.
+
+Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
+
+The integration is triggered by an HTTP Endpoint that receives the migration request. Then it retrieves all customers from SAP using the standard BAPI **BAPI_CUSTOMER_GETLIST**, transforms them into Salesforce Accounts and passes them to the Batch process.
+
+As implemented, this Anypoint Template leverages the Batch Module. The batch job is divided in Input, Process and On Complete stages.
+
+During the Process stage, in the first Step the Template will go to Salesforce and query all the existing Accounts matching the Name for each SAP Customer. In the following step, the Account will be upserted to Salesforce.
+
+Finally during the On Complete stage the Template will both output statistics data into the console and send a notification email with the results of the batch execution.
 		</section>
 		<section id="considerations">
 		<![CDATA[
