@@ -30,7 +30,7 @@ This Anypoint Template should serve as a foundation for setting an offline migra
 
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 
-The integration is triggered by an HTTP Endpoint that receives the migration request. Then it retrieves all customers from SAP using the standard BAPI **BAPI_CUSTOMER_GETLIST**, transforms them into Salesforce Accounts and passes them to the Batch process.
+The integration is triggered by an HTTP Listener Connector that receives the migration request. Then it retrieves all customers from SAP using the standard BAPI **BAPI\_CUSTOMER\_GETLIST**, transforms them into Salesforce Accounts and passes them to the Batch process.
 
 As implemented, this Anypoint Template leverages the Batch Module. The batch job is divided in Input, Process and On Complete stages.
 
@@ -45,7 +45,7 @@ All of them deal with the preparations in both source (SAP) and destination (SFD
 **Failling to do so could lead to unexpected behavior of the template.**
 
 Before continue with the use of this Anypoint Template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
-with SAP and Anypoint Studio-
+with SAP and Anypoint Studio.
 
 ## Disclaimer
 
@@ -165,13 +165,15 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sfdc.securityToken=avsfwCUl7apQs56Xq2AKi3X
 + sfdc.url=https://test.salesforce.com/services/Soap/u/28.0
 
-# SMPT Services configuration
+**SMPT Services configuration**
+
 + smtp.host=smtp.gmail.com
 + smtp.port=587
 + smtp.user=gmailuser
 + smtp.password=gmailpassword
 
-# Mail details
+**Mail details**
+
 + mail.from=your.email@gmail.com
 + mail.to=your.email@gmail.com
 + mail.subject=Mail subject
@@ -212,12 +214,26 @@ In the visual editor they can be found on the *Global Element* tab.
 
 
 ## businessLogic.xml<a name="businesslogicxml"/>
-A functional aspect of this Anypoint Template implemented in this XML is to create or update objects in the destination system for a represented use case. You can customize and extend the logic of this Anypoint Template in this XML to more specifically meet your needs.
+Functional aspect of the Anypoint Template is implemented on this XML, directed by a batch job that will be responsible for creations/updates. The several message processors constitute four high level actions that fully implement the logic of this Anypoint Template:
+
+1. Job execution is invoked from triggerFlow (endpoints.xml).
+2. During the Process stage, each Customer will be filtered depending on, if it has an existing matching Account in the Salesforce instance. The matching is performed by querying a Salesforce instance for an entry with the given Name.
+3. The next step will insert a new record into the Salesforce instance if there was none found in the previous step or update the existing one.
+
+Finally during the On Complete stage the Anypoint Template will logoutput statistics data into the console and send the send a notification email with the results.
 
 
 
 ## endpoints.xml<a name="endpointsxml"/>
-This is file is conformed by a Flow containing the endpoints for triggering the template and retrieving the objects that meet the defined criteria in the query. And then executing the batch job process with the query results.
+This is the file where you will found the inbound and outbound sides of your integration app.
+This Template has a [HTTP Listener Connector](http://www.mulesoft.org/documentation/display/current/HTTP+Listener+Connector) as the way to trigger the use case.
+
+### Trigger Flow
+**HTTP Listener Connector** - Start Report Generation
+
++ `${http.port}` is set as a property to be defined either on a property file or in CloudHub environment variables.
++ The path configured by default is `migrateaccounts` and you are free to change for the one you prefer.
++ The host name for all endpoints in your CloudHub configuration should be defined as `0.0.0.0`. CloudHub will then route requests from your application domain URL to the endpoint.
 
 
 
