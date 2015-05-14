@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" 
+	  xmlns:http="http://www.mulesoft.org/schema/mule/http"
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-      xmlns:spring="http://www.springframework.org/schema/beans"
-      version="EE-3.6.0"
+      version="EE-3.6.2"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
-http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
-http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
-http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
-http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd">
-    <data-mapper:config name="XML_To_Accountd" transformationGraphPath="xml_to_account.grf" doc:name="XML_To_Account"/>
+http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd">
+
     <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener Configuration"/>
 
 	<!-- 	In this file you should declare all your inbound endpoints in order to control the access to your application -->
 
-	<flow name="triggerFlow" processingStrategy="synchronous" doc:name="triggerFlow" doc:description="This is the simpliest entry point to start the excecution of your Template
+	<flow name="triggerFlow" processingStrategy="synchronous"  doc:description="This is the simpliest entry point to start the excecution of your Template
 Here you should:
 	* Define any inbound endpoint
 	* Handle any input parameter and transform it into the expected format by the mainFlow
@@ -30,7 +26,7 @@ Here you should not:
                 <http:header headerName="content-type" value="text/html"/>
             </http:response-builder>
         </http:listener>
-        <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_GETLIST" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="query customers from SAP">
+        <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_GETLIST" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="Query customers from SAP">
             <sap:definition><![CDATA[<BAPI_CUSTOMER_GETCONTACTLIST>
 	<import>
 		<MAXROWS>5</MAXROWS>
@@ -49,29 +45,12 @@ Here you should not:
 
 
 ]]></sap:definition>
+
         </sap:outbound-endpoint>
         <logger message="#[payload]" level="INFO" doc:name="Logger"/>
-        <flow-ref name="mainFlow" doc:name="trigger main flow"/>
-        <set-payload value="&lt;body style='font-family:Courier'&gt;&lt;h1&gt;Batch Process initiated&lt;/h1&gt;&lt;b&gt;ID:&lt;/b&gt;#[payload.getId()]&lt;br/&gt;&lt;b&gt;Records to Be Processed: &lt;/b&gt;#[payload.getRecordCount()]&lt;br/&gt; &lt;b&gt;Start execution on: &lt;/b&gt;#[new java.util.Date()]&lt;/body&gt;" doc:name="build http response"/>
+        <flow-ref name="mainFlow" doc:name="Trigger main flow"/>
+        <set-payload value="&lt;body style='font-family:Courier'&gt;&lt;h1&gt;Batch Process initiated&lt;/h1&gt;&lt;b&gt;ID:&lt;/b&gt;#[payload.getId()]&lt;br/&gt;&lt;b&gt;Records to Be Processed: &lt;/b&gt;#[payload.getRecordCount()]&lt;br/&gt; &lt;b&gt;Start execution on: &lt;/b&gt;#[new java.util.Date()]&lt;/body&gt;" doc:name="Build HTTP response"/>
 
     
     </flow>
 </mule>
-
-
-<!-- working all
-
-	<import>
-		<field name="MAXROWS"></field>
-	</import>
-  	<tables>
-	    <table name="IDRANGE">
-	      <row id="0">
-				<field name="SIGN">I</field>
-				<field name="OPTION">CP</field>
-				<field name="LOW">*</field>
-				<field name="HIGH"></field>
-	      </row>
-	    </table>		
-	</tables>
--->

@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
-	xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp"
-	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	  xmlns:smtp="http://www.mulesoft.org/schema/mule/smtp"
+	  xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
+	  xmlns:batch="http://www.mulesoft.org/schema/mule/batch" 
+	  xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper"
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-      xmlns:spring="http://www.springframework.org/schema/beans"
-      version="EE-3.6.0"
+      version="EE-3.6.2"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/smtp http://www.mulesoft.org/schema/mule/smtp/current/mule-smtp.xsd
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
 http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd">
+
     <data-mapper:config name="XML_To_Account" transformationGraphPath="xml_to_account.grf" doc:name="DataMapper"/>
     <batch:job name="syncAccountsBatch">
         <batch:threading-profile poolExhaustedAction="WAIT"/>
         <batch:input>
-            <data-mapper:transform config-ref="XML_To_Account" doc:name="convert SAP response to Salesforce Account"/>
+            <data-mapper:transform config-ref="XML_To_Account" doc:name="Convert SAP response to Salesforce Account"/>
         </batch:input>
         <batch:process-records>
             <batch:step name="foreachUserFetchSalesforceStep">
                 <expression-component doc:name="Sanitize Name"><![CDATA[// TODO removed single quote as the salesforce query will then crash
 payload.put('Name', payload.get('Name').replaceAll("'", " "));]]></expression-component>
                 <enricher source="#[payload]" target="#[recordVars['accountInSalesforce']]" doc:name="store result in record var 'accountInSalesforce'">
-                    <sfdc:query-single config-ref="Salesforce" query="SELECT Id, Name FROM Account WHERE Name = '#[payload.Name]'"  doc:name="query Salesforce for current Account"/>
+                    <sfdc:query-single config-ref="Salesforce" query="SELECT Id, Name FROM Account WHERE Name = '#[payload.Name]'"  doc:name="Query Salesforce for current Account"/>
                 </enricher>
             </batch:step>
               
             <batch:step name="createAccountsInSalesforceStep" accept-expression="!(payload is NullPayload)">
 
-                <expression-component doc:name=" prepare to upsert"><![CDATA[payload['Id'] = recordVars['accountInSalesforce'] is NullPayload ? null : recordVars['accountInSalesforce']['Id'];
+                <expression-component doc:name=" Prepare to upsert"><![CDATA[payload['Id'] = recordVars['accountInSalesforce'] is NullPayload ? null : recordVars['accountInSalesforce']['Id'];
 
 // changing type of field NumberOfEmployees to int
 if (payload.get('NumberOfEmployees') == null) {
@@ -44,33 +44,33 @@ if (payload.get('NumberOfEmployees') == null) {
 }]]></expression-component>
 
                 <batch:commit size="200" doc:name="Batch Commit">
-                    <sfdc:upsert config-ref="Salesforce" externalIdFieldName="Id" type="Account" doc:name="upsert accounts in Salesforce">
+                    <sfdc:upsert config-ref="Salesforce" externalIdFieldName="Id" type="Account" doc:name="Upsert accounts in Salesforce">
                         <sfdc:objects ref="#[payload]"/>
                     </sfdc:upsert>
-                    <logger message="#[payload]" level="INFO" doc:name="log response"/>
+                    <logger message="#[payload]" level="INFO" doc:name="Log response"/>
                 </batch:commit>
             </batch:step>                  
         </batch:process-records>
         <batch:on-complete>
             <scatter-gather doc:name="All">
                 <processor-chain>
-            		<json:object-to-json-transformer doc:name="transform BatchJobInstance to JSON"/>
-            		<logger message="Migration process has finished: #[payload]" level="INFO" doc:name="log 'Migration process has finished'"/>
+            		<json:object-to-json-transformer doc:name="Transform BatchJobInstance to JSON"/>
+            		<logger message="Migration process has finished: #[payload]" level="INFO" doc:name="Log 'Migration process has finished'"/>
                 </processor-chain>
 				<processor-chain>
-                	<json:object-to-json-transformer doc:name="transform BatchJobInstance to JSON"/>
-					<smtp:outbound-endpoint host="${smtp.host}" port="${smtp.port}" user="${smtp.user}" password="${smtp.password}" to="${mail.to}" from="${mail.from}" subject="${mail.subject}" responseTimeout="10000" connector-ref="gmailConnector" doc:name="send mail"/>
+                	<json:object-to-json-transformer doc:name="Transform BatchJobInstance to JSON"/>
+					<smtp:outbound-endpoint host="${smtp.host}" port="${smtp.port}" user="${smtp.user}" password="${smtp.password}" to="${mail.to}" from="${mail.from}" subject="${mail.subject}" responseTimeout="10000" connector-ref="gmailConnector" doc:name="Send mail"/>
 				</processor-chain>
             </scatter-gather>            
         </batch:on-complete>
     </batch:job>
 
-    <flow name="mainFlow" doc:name="mainFlow" doc:description="This flow is the entry point to the Kick business logic.
+    <flow name="mainFlow"  doc:description="This flow is the entry point to the Kick business logic.
 
 This flow should control the direction of the application, and it should be called by the different endpoints that your Template exposes to trigger it.
 
 ">
-        <batch:execute name="syncAccountsBatch" doc:name="Batch Execute"/>
+        <batch:execute name="syncAccountsBatch" doc:name="Execute syncAccountsBatch"/>
 
         <exception-strategy ref="defaultChoiceExceptionStrategy" doc:name="Reference Exception Strategy"/>
     </flow>
