@@ -95,6 +95,10 @@ In order to have this template working as expected, you should be aware of your 
 
 
 
+
+
+
+
 # Run it! <a name="runit"/>
 Simple steps to get SAP to Salesforce Customer Migration running.
 
@@ -184,13 +188,13 @@ Therefore calculating this amount may be an important factor to
 consider. Customer migration template calls to the API can be
 calculated using the formula:
 
-**X / 200**
+**X + (X / 200)**
 
-Being X the number of Accounts to be synchronized on each run.
+Being X the number of Customers to be synchronized on each run.
 
-The division by 200 is because, by default, Accounts are gathered in groups
+The division by 200 is because, by default, Customers are gathered in groups
 of 200 for each Upsert API Call in the commit step. 
-For instance if 10 records are fetched from origin instance, then 1 api
+For instance if 10 records are fetched from origin instance, then 11 api
 calls to SFDC will be made ( 1).
 
 
