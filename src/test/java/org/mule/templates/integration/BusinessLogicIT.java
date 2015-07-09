@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,6 +32,7 @@ import com.mulesoft.module.batch.BatchTestHelper;
 public class BusinessLogicIT extends AbstractTemplateTestCase {
 	protected static final String TEMPLATE_NAME = "customer-migration";
 	protected static final int TIMEOUT_SEC = 120;
+	private static final Logger LOGGER = LogManager.getLogger(BusinessLogicIT.class);
 	private BatchTestHelper helper;
 	
 	protected SubflowInterceptingChainLifecycleWrapper createAccountSapFlow;
@@ -91,8 +94,9 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		createdAccountInSap.add(sapAccount3);
 	
 		MuleEvent event = createAccountSapFlow.process(getTestEvent(createdAccountInSap, MessageExchangePattern.REQUEST_RESPONSE));
-		System.err.println("SAP RESPONSE");
-		System.err.println(event.getMessage().getPayload());
+		
+		LOGGER.info("SAP RESPONSE");
+		LOGGER.info(event.getMessage().getPayload());
 	}
 
 	private void deleteSapTestData(){

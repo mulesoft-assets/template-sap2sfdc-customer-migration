@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>org.mule.templates</groupId>
 		<artifactId>templates-tooling-parent-pom</artifactId>
-		<version>1.1.9</version>
+		<version>1.2.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>template-sap2sfdc-customer-migration</artifactId>
 	<packaging>mule</packaging>
-	<version>1.1.2-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<name>template-sap2sfdc-customer-migration Anypoint Template Project</name>
 
 	<properties>
@@ -28,10 +28,18 @@
 				<configuration>
 					<copyToAppsDirectory>true</copyToAppsDirectory>
 					<inclusions>
+						<inclusion>
+							<groupId>org.mule.modules</groupId>
+							<artifactId>mule-module-sfdc</artifactId>
+						</inclusion>
+						<inclusion>
+							<groupId>com.mulesoft.muleesb.transports</groupId>
+							<artifactId>mule-transport-sap</artifactId>
+						</inclusion>
 					</inclusions>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -70,7 +78,7 @@
 						<configuration>
 							<tasks>
 								<zip destfile="${project.build.directory}/${project.build.finalName}.zip" update="true">
-									<zipfileset dir="${project.build.directory}/temp-native-lib" prefix="lib" />
+									<zipfileset dir="${project.build.directory}/temp-native-lib" prefix="lib"/>
 								</zip>
 							</tasks>
 						</configuration>
@@ -84,7 +92,7 @@
 	</build>
 
 	<dependencies>
-		
+
 		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-module-sfdc</artifactId>
@@ -96,7 +104,6 @@
 			<version>${sap.version}</version>
 		</dependency>
 
-		
 		<dependency>
 			<groupId>com.sap.conn.jco</groupId>
 			<artifactId>sapjco3</artifactId>
@@ -116,7 +123,7 @@
 			<version>${sap.idoc.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.mulesoft.muleesb.modules</groupId>
 			<artifactId>mule-module-batch-ee</artifactId>
@@ -129,18 +136,18 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
 		</dependency>
-	<dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-spring-config</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-http</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-spring-config</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-http</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
     </dependencies>
 
 	<repositories>
@@ -157,11 +164,6 @@
 			<layout>default</layout>
 		</repository>
 		<repository>
-			<id>mule-ee-dependencies</id>
-			<name>Mule EE Dependencies</name>
-			<url>http://repository-master.mulesoft.org/nexus/content/repositories/mule-ee-dependencies/</url>
-		</repository>
-		<repository>
 			<id>mule-ee-thirdparty</id>
 			<name>MuleSoft Thirdparty Repository</name>
 			<url>https://repository.mulesoft.org/nexus/content/repositories/thirdparty/</url>
@@ -172,6 +174,6 @@
 		<connection>scm:git:https://github.com/mulesoft/template-sap2sfdc-customer-migration.git</connection>
 		<developerConnection>scm:git:https://github.com/mulesoft/mulesoft/template-sap2sfdc-customer-migration.git</developerConnection>
 		<url>http://github.com/mulesoft/mulesoft/template-sap2sfdc-customer-migration.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 </project>

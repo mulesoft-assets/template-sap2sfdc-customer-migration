@@ -169,7 +169,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
 + sfdc.url `https://login.salesforce.com/services/Soap/u/32.0`
 
-**SMPT Services configuration**
+**SMTP Services configuration**
 
 + smtp.host `smtp.gmail.com`
 + smtp.port `587`

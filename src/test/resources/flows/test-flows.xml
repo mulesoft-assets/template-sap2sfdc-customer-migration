@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:spring="http://www.springframework.org/schema/beans"
 	  xmlns:sap="http://www.mulesoft.org/schema/mule/sap" 
 	  xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 	  xmlns="http://www.mulesoft.org/schema/mule/core" 
 	  xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	  version="EE-3.6.2" 
+	  version="EE-3.7.0" 
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
-http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+
     
-    <data-mapper:config name="BAPI_CUSTOMER_GETINTNUMBER_to_Customr_Number" transformationGraphPath="bapi_customer_getintnumber_to_customr_number.grf" doc:name="DataMapper"/>
-    <data-mapper:config name="Salesfore_Account_to_DEBMAS01" transformationGraphPath="salesfore_account_to_debmas01.grf" doc:name="DataMapper"/>
-    
-    <sub-flow name="createAccountSapFlow" doc:name="createAccountSapFlow">
+    <sub-flow name="createAccountSapFlow" >
         <logger level="INFO" doc:name="Logger" message="#[payload]"/>
         
 		<processor-chain doc:name="Processor Chain">
@@ -31,28 +30,57 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
 ]]></sap:definition>
 
 			</sap:outbound-endpoint>
-			<data-mapper:transform config-ref="BAPI_CUSTOMER_GETINTNUMBER_to_Customr_Number"
-				doc:name="BAPI_CUSTOMER_GETINTNUMBER to Customr Number" />
-			<expression-component doc:name="Expression"><![CDATA[payload['AccountGroup'] = '${sap.default.accountGroup}';]]></expression-component>
-			<data-mapper:transform config-ref="Salesfore_Account_to_DEBMAS01"
-				doc:name="Salesfore Account to DEBMAS01" />
+            <dw:transform-message doc:name="Salesfore Account to DEBMAS01">
+                <dw:set-payload><![CDATA[%dw 1.0
+%input payload application/xml
+%output application/xml
+---
+DEBMAS01 : {
+	IDOC @(BEGIN: "1"): {
+			EDI_DC40 @(SEGMENT: "1"): {
+			TABNAM: "EDI_DC40",
+			DIRECT: "2",
+			IDOCTYP: "DEBMAS01",
+			MESTYP: "DEBMAS",
+			SNDPOR: "MULESOFT",
+			SNDPRT: "LS",
+			SNDPRN: "MULESOFT",
+			RCVPOR: "MULESOFT",
+			RCVPRT: "LS",
+			RCVPRN: "MULESOFT",
+			CREDAT: "00000000",
+			CRETIM: "000000"
+		},
+		E1KNA1M @(SEGMENT: "1"): {
+			KUNNR: payload.BAPI_CUSTOMER_GETINTNUMBER.export.CUSTOMERID default "",
+			KTOKD: p('sap.default.accountGroup'),
+			MSGFN: "009",
+			LAND1: "SK",
+			SPRAS: "E",
+			SPRAS_ISO: "EN"
+		}
+	}
+}
+]]></dw:set-payload>
+            </dw:transform-message>
+
 			<sap:outbound-endpoint exchange-pattern="request-response"
 				connector-ref="SAP" type="idoc" functionName="DEBMAS01" xmlVersion="2"
 				outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000"
 				doc:name="Create Customer in SAP" />
 		</processor-chain>
-        <logger message="999999999999 #[payload]" level="INFO" doc:name="Logger"/>        
+        <logger message="Created account: #[payload]" level="INFO" doc:name="Logger"/>        
         
     </sub-flow>
-    <sub-flow name="deleteAccountFromSapFlow" doc:name="deleteAccountFromSapFlow">
+    <sub-flow name="deleteAccountFromSapFlow" >
         <logger level="INFO" doc:name="Logger"/>
     </sub-flow>
-    <sub-flow name="retrieveAccountFromSalesforceFlow" doc:name="retrieveAccountFromSalesforceFlow">
+    <sub-flow name="retrieveAccountFromSalesforceFlow" >
         <sfdc:query-single config-ref="Salesforce" query="SELECT Id, AccountNumber, Description, Fax, Industry, Name,NumberOfEmployees, ParentId, Phone FROM Account WHERE Name = '#[payload[&quot;Name&quot;]]'" doc:name="Salesforce" />
-        <logger level="INFO" doc:name="Logger"/>
+        <logger level="INFO" doc:name="Logger" message="#[payload]"/>
     </sub-flow>
-    <sub-flow name="deleteAccountFromSalesforceFlow" doc:name="deleteAccountFromSalesforceFlow">
-        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    <sub-flow name="deleteAccountFromSalesforceFlow" >
+
         <sfdc:delete config-ref="Salesforce" doc:name="Salesforce">
             <sfdc:ids ref="#[payload]"/>
         </sfdc:delete>
