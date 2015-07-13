@@ -83,12 +83,6 @@
 			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>com.sap.conn.idoc</groupId>
-			<artifactId>sapidoc3</artifactId>
-			<version>${sap.idoc.version}</version>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>com.mulesoft.muleesb.modules</groupId>
