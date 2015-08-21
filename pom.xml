@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.mule.templates</groupId>
 		<artifactId>templates-tooling-parent-pom</artifactId>
-		<version>1.2.1</version>
+		<version>1.2.2</version>
 	</parent>
 
 	<artifactId>template-sap2sfdc-customer-migration</artifactId>
@@ -17,7 +17,7 @@
 	<properties>
 		<sap.jco.version>3.0.13</sap.jco.version>
 		<sap.idoc.version>3.0.12</sap.idoc.version>
-	</properties>
+    </properties>
 
 	<build>
 		<plugins>
@@ -52,9 +52,9 @@
 						<additionalClasspathElement>${project.basedir}/libraries/SAP.${sap.idoc.version}/sapidoc3.jar</additionalClasspathElement>
 					</additionalClasspathElements>
 				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+			</plugin>		
+        </plugins>
+    </build>
 
 	<dependencies>
 
