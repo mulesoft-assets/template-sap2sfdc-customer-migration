@@ -15,9 +15,8 @@
 	<name>template-sap2sfdc-customer-migration Anypoint Template Project</name>
 
 	<properties>
-		<sap.jco.version>3.0.10</sap.jco.version>
-		<sap.idoc.version>3.0.10</sap.idoc.version>
-		<sap.build.type>linux64</sap.build.type>
+		<sap.jco.version>3.0.13</sap.jco.version>
+		<sap.idoc.version>3.0.12</sap.idoc.version>
     </properties>
 
 	<build>
@@ -39,55 +38,21 @@
 					</inclusions>
 				</configuration>
 			</plugin>
-
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>com.sap.conn.jco</groupId>
-									<artifactId>sapjco-native</artifactId>
-									<version>${sap.jco.version}</version>
-									<classifier>${sap.build.type}</classifier>
-									<type>jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${project.build.directory}/temp-native-lib</outputDirectory>
-									<includes>**/*.dll,**/*.so,**/*.jnilib</includes>
-									<excludes>META-INF</excludes>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>add-native-lib</id>
-						<phase>package</phase>
-						<configuration>
-							<tasks>
-								<zip destfile="${project.build.directory}/${project.build.finalName}.zip" update="true">
-									<zipfileset dir="${project.build.directory}/temp-native-lib" prefix="lib"/>
-								</zip>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<argLine>-Djava.library.path=${project.basedir}/libraries/SAP.${sap.jco.version}</argLine>
+					<classpathDependencyExcludes>
+						<classpathDependencyExcludes>com.sap.conn.jco:sapjco</classpathDependencyExcludes>
+						<classpathDependencyExcludes>com.sap.conn.idoc:sapidoc</classpathDependencyExcludes>
+					</classpathDependencyExcludes>
+					<additionalClasspathElements>
+						<additionalClasspathElement>${project.basedir}/libraries/SAP.${sap.jco.version}/sapjco3.jar</additionalClasspathElement>
+						<additionalClasspathElement>${project.basedir}/libraries/SAP.${sap.idoc.version}/sapidoc3.jar</additionalClasspathElement>
+					</additionalClasspathElements>
+				</configuration>
+			</plugin>		
         </plugins>
     </build>
 
@@ -103,25 +68,19 @@
 			<artifactId>mule-transport-sap</artifactId>
 			<version>${sap.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.sap.conn.jco</groupId>
-			<artifactId>sapjco3</artifactId>
+			<artifactId>sapjco</artifactId>
 			<version>${sap.jco.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sap.conn.jco</groupId>
-			<artifactId>sapjco-native</artifactId>
-			<version>${sap.jco.version}</version>
-			<classifier>${sap.build.type}</classifier>
-			<scope>test</scope>
+			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.sap.conn.idoc</groupId>
-			<artifactId>sapidoc3</artifactId>
+			<artifactId>sapidoc</artifactId>
 			<version>${sap.idoc.version}</version>
-			<scope>test</scope>
+			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -148,7 +107,13 @@
 			<version>${mule.version}</version>
 			<scope>provided</scope>
 		</dependency>
-    </dependencies>
+		<dependency>
+			<groupId>com.mulesoft.weave</groupId>
+			<artifactId>mule-plugin-weave_2.11</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 
 	<repositories>
 		<repository>
@@ -158,15 +123,15 @@
 			<layout>default</layout>
 		</repository>
 		<repository>
-			<id>mulesoft-snapshots</id>
-			<name>MuleSoft Snapshots Repository</name>
-			<url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
+			<id>mule-ee-releases</id>
+			<name>MuleSoft Releases EE Repository</name>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/releases-ee/</url>
 			<layout>default</layout>
 		</repository>
 		<repository>
-			<id>mule-ee-thirdparty</id>
-			<name>MuleSoft Thirdparty Repository</name>
-			<url>https://repository.mulesoft.org/nexus/content/repositories/thirdparty/</url>
+			<id>mulesoft-snapshots</id>
+			<name>MuleSoft Snapshots Repository</name>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
 			<layout>default</layout>
 		</repository>
 	</repositories>
