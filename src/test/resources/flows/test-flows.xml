@@ -5,7 +5,7 @@
 	  xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 	  xmlns="http://www.mulesoft.org/schema/mule/core" 
 	  xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	  version="EE-3.7.0" 
+	   
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
@@ -24,7 +24,7 @@ http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee
 				responseTimeout="10000" doc:name="Get Next Customer Number from SAP">
                 <sap:definition><![CDATA[<BAPI_CUSTOMER_GETINTNUMBER>
 	<import>
-		<ACCOUNTGROUP>ZAG2</ACCOUNTGROUP>
+		<ACCOUNTGROUP>ZAG1</ACCOUNTGROUP>
 	</import>
 </BAPI_CUSTOMER_GETINTNUMBER>
 ]]></sap:definition>
@@ -65,7 +65,7 @@ DEBMAS01 : {
 
 			<sap:outbound-endpoint exchange-pattern="request-response"
 				connector-ref="SAP" type="idoc" functionName="DEBMAS01" xmlVersion="2"
-				outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000"
+				outputXml="true"  responseTimeout="10000"
 				doc:name="Create Customer in SAP" />
 		</processor-chain>
         <logger message="Created account: #[payload]" level="INFO" doc:name="Logger"/>        
