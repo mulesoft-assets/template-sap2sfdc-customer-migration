@@ -40,7 +40,7 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	protected SubflowInterceptingChainLifecycleWrapper retrieveAccountFromSalesforceFlow;
 	protected SubflowInterceptingChainLifecycleWrapper deleteAccountFromSalesforceFlow;
 	
-	private String existingCustomerNameInSap = "Nelson Tax & Associates";
+	private String existingCustomerNameInSap = "PEPE";
 	Map<String, Object> sfAccount;
 	
 	@Before
