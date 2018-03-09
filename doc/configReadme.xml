@@ -11,7 +11,7 @@ Requirements have been set not only to be used as examples, but also to establis
 
 The integration is triggered by an HTTP Listener Connector that receives the migration request. Then it retrieves all customers from SAP using the standard BAPI **BAPI\_CUSTOMER\_GETLIST**, transforms them into Salesforce Accounts and passes them to the Batch process.
 
-As implemented, this Anypoint Template leverages the Batch Module. The batch job is divided in Input, Process and On Complete stages.
+As implemented, this Anypoint Template leverages the Batch Module. The batch job is divided in Process and On Complete stages.
 
 During the Process stage, in the first Step the Template will go to Salesforce and query all the existing Accounts matching the Name for each SAP Customer. In the following step, the Account will be upserted to Salesforce.
 
@@ -106,7 +106,7 @@ $H$H# Trigger Flow
 
 + `${http.port}` is set as a property to be defined either on a property file or in CloudHub environment variables.
 + The path configured by default is `migrateaccounts` and you are free to change for the one you prefer.
-+ The host name for all endpoints in your CloudHub configuration should be defined as `0.0.0.0`. CloudHub will then route requests from your application domain URL to the endpoint.
++ The host name for all endpoints in your CloudHub configuration should be defined as `localhost`. CloudHub will then route requests from your application domain URL to the endpoint.
 
 ]]>
 		</section>

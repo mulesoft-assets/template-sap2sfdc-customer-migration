@@ -13,10 +13,6 @@
 	<packaging>mule-application</packaging>
 	<name>template-sap2sfdc-customer-migration</name>
 
-	<properties>
-		<mule.sap.connector.version>4.0.0</mule.sap.connector.version>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -53,7 +49,7 @@
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-sap-connector</artifactId>
-			<version>${mule.sap.connector.version}</version>
+			<version>${sap.connector.version}</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 		<!-- Please Add dependencies for SAP libraries -->
