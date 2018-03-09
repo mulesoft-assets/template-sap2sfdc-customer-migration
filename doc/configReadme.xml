@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<configuration>
+	<placeholders>
+		<placeholder id="template_name">SAP to Salesforce Customer Migration</placeholder>
+	</placeholders>
+	<sections>
+		<section id="use_case">
+This Anypoint Template should serve as a foundation for setting an offline migration of Customers from SAP to Salesforce Accounts.
+
+Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
+
+The integration is triggered by an HTTP Listener Connector that receives the migration request. Then it retrieves all customers from SAP using the standard BAPI **BAPI\_CUSTOMER\_GETLIST**, transforms them into Salesforce Accounts and passes them to the Batch process.
+
+As implemented, this Anypoint Template leverages the Batch Module. The batch job is divided in Process and On Complete stages.
+
+During the Process stage, in the first Step the Template will go to Salesforce and query all the existing Accounts matching the Name for each SAP Customer. In the following step, the Account will be upserted to Salesforce.
+
+Finally during the On Complete stage the Template will both output statistics data into the console and send a notification email with the results of the batch execution.
+		</section>
+		<section id="considerations">
+		<![CDATA[
+To make this Anypoint Template run, there are certain preconditions that must be considered.
+All of them deal with the preparations in both source (SAP) and destination (SFDC) systems, that must be made in order for all to run smoothly.
+**Failling to do so could lead to unexpected behavior of the template.**
+
+Before continue with the use of this Anypoint Template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
+with SAP and Anypoint Studio.
+
+## Disclaimer
+
+This Anypoint template uses a few private Maven dependencies from Mulesoft in order to work. If you intend to run this template with Maven support, you need to add three extra dependencies for SAP to the pom.xml file.
+]]>
+		</section>
+		<section id="running_on_studio">
+		<![CDATA[
+In order to make this Anypoint Template run on Mule Studio there are a few extra steps that needs to be made.
+Please check this Documentation Page:
+
++ [Enabling Your Studio Project for SAP](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP)
+		]]>
+		</section>
+		<section id="application_configuration">
+		<![CDATA[
+**HTTP Connector configuration**
+
++ http.port `9090`
+
+**Batch Aggregator configuration**
+
++ page.size `200`
+
+**SAP Connector configuration**
+
++ sap.jco.ashost `your.sap.address.com`
++ sap.jco.user `SAP_USER`
++ sap.jco.passwd `SAP_PASS`
++ sap.jco.sysnr `14`
++ sap.jco.client `800`
++ sap.jco.lang `EN`
+
+**SalesForce Connector configuration**
+
++ sfdc.username `bob.dylan@sfdc`
++ sfdc.password `DylanPassword123`
++ sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
+
+**SMTP Services configuration**
+
++ smtp.host `smtp.gmail.com`
++ smtp.port `587`
++ smtp.user `gmailuser`
++ smtp.password `gmailpassword`
+
+**Mail details**
+
++ mail.from `your.email@gmail.com`
++ mail.to `your.email@gmail.com`
++ mail.subject `Mail subject`
+
+]]>
+		</section>
+		<section id="api_calls">
+		<![CDATA[
+SalesForce imposes limits on the number of API Calls that can be made.
+Therefore calculating this amount may be an important factor to
+consider. Customer migration template calls to the API can be
+calculated using the formula:
+
+**X + (X / ${page.size})**
+
+Being X the number of Customers to be synchronized on each run.
+
+The division by ${page.size} is because, by default, Customers are gathered in groups
+of ${page.size} for each Upsert API Call in the commit step. 
+For instance if 10 records are fetched from origin instance, then 11 api
+calls to SFDC will be made ( 1).
+]]>
+		</section>
+		<section id="default_endpoints_xml">
+		<![CDATA[
+This is the file where you will found the inbound and outbound sides of your integration app.
+This Template has a [HTTP Listener Connector](http://www.mulesoft.org/documentation/display/current/HTTP+Listener+Connector) as the way to trigger the use case.
+
+$H$H# Trigger Flow
+**HTTP Listener Connector** - Start Report Generation
+
++ `${http.port}` is set as a property to be defined either on a property file or in CloudHub environment variables.
++ The path configured by default is `migrateaccounts` and you are free to change for the one you prefer.
++ The host name for all endpoints in your CloudHub configuration should be defined as `localhost`. CloudHub will then route requests from your application domain URL to the endpoint.
+
+]]>
+		</section>
+		<section id="default_business_logic_xml">
+		<![CDATA[
+Functional aspect of the Anypoint Template is implemented on this XML, directed by a batch job that will be responsible for creations/updates. The several message processors constitute four high level actions that fully implement the logic of this Anypoint Template:
+
+1. Job execution is invoked from triggerFlow (endpoints.xml).
+2. During the Process stage, each Customer will be filtered depending on, if it has an existing matching Account in the Salesforce instance. The matching is performed by querying a Salesforce instance for an entry with the given Name.
+3. The next step will insert a new record into the Salesforce instance if there was none found in the previous step or update the existing one.
+
+Finally during the On Complete stage the Anypoint Template will log output statistics data into the console and send a notification email with the results.
+]]>
+		</section>
+	</sections>
+</configuration>
