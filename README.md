@@ -32,17 +32,17 @@ Requirements have been set not only to be used as examples, but also to establis
 
 The integration is triggered by an HTTP Listener Connector that receives the migration request. Then it retrieves all customers from SAP using the standard BAPI **BAPI\_CUSTOMER\_GETLIST**, transforms them into Salesforce Accounts and passes them to the Batch process.
 
-As implemented, this Anypoint Template leverages the Batch Module. The batch job is divided in Process and On Complete stages.
+As implemented, this Anypoint Template leverages the Batch Module. The batch job is divided in *Process* and *On Complete* stages.
 
-During the Process stage, in the first Step the Template will go to Salesforce and query all the existing Accounts matching the Name for each SAP Customer. In the following step, the Account will be upserted to Salesforce.
+During the *Process* stage, in the first Step the Template will go to Salesforce and query all the existing Accounts matching the Name for each SAP Customer. In the following step, the Account will be upserted to Salesforce.
 
-Finally during the On Complete stage the Template will both output statistics data into the console and send a notification email with the results of the batch execution.
+Finally during the *On Complete* stage the Template will both output statistics data into the console and send a notification email with the results of the batch execution.
 
 # Considerations <a name="considerations"/>
 
 To make this Anypoint Template run, there are certain preconditions that must be considered.
 All of them deal with the preparations in both source (SAP) and destination (SFDC) systems, that must be made in order for all to run smoothly.
-**Failling to do so could lead to unexpected behavior of the template.**
+**Failing to do so could lead to unexpected behavior of the template.**
 
 Before continue with the use of this Anypoint Template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
 with SAP and Anypoint Studio.
@@ -114,10 +114,8 @@ First thing to know if you are a newcomer to Mule is where to get the tools.
 ### Importing an Anypoint Template into Studio
 Mule Studio offers several ways to import a project into the workspace, for instance: 
 
-+ Anypoint Studio generated Deployable Archive (.zip)
-+ Anypoint Studio Project from External Location
-+ Maven-based Mule Project from pom.xml
-+ Mule ESB Configuration XML from External Location
++ Anypoint Studio Project from File System
++ Packaged mule application (.jar)
 
 You can find a detailed description on how to do so in this [Documentation Page](http://www.mulesoft.org/documentation/display/current/Importing+and+Exporting+in+Studio).
 
@@ -151,15 +149,12 @@ Mule Studio provides you with really easy way to deploy your Template directly t
 In order to use this Mule Anypoint Template you need to configure properties (Credentials, configurations, etc.) either in properties file or in CloudHub as Environment Variables. Detail list with examples:
 ### Application configuration
 **HTTP Connector configuration**
-
 + http.port `9090`
 
 **Batch Aggregator configuration**
-
 + page.size `200`
 
 **SAP Connector configuration**
-
 + sap.jco.ashost `your.sap.address.com`
 + sap.jco.user `SAP_USER`
 + sap.jco.passwd `SAP_PASS`
@@ -168,20 +163,17 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sap.jco.lang `EN`
 
 **SalesForce Connector configuration**
-
 + sfdc.username `bob.dylan@sfdc`
 + sfdc.password `DylanPassword123`
 + sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
 
 **SMTP Services configuration**
-
 + smtp.host `smtp.gmail.com`
 + smtp.port `587`
 + smtp.user `gmailuser`
 + smtp.password `gmailpassword`
 
 **Mail details**
-
 + mail.from `your.email@gmail.com`
 + mail.to `your.email@gmail.com`
 + mail.subject `Mail subject`
@@ -225,10 +217,10 @@ In the visual editor they can be found on the *Global Element* tab.
 Functional aspect of the Anypoint Template is implemented on this XML, directed by a batch job that will be responsible for creations/updates. The several message processors constitute four high level actions that fully implement the logic of this Anypoint Template:
 
 1. Job execution is invoked from triggerFlow (endpoints.xml).
-2. During the Process stage, each Customer will be filtered depending on, if it has an existing matching Account in the Salesforce instance. The matching is performed by querying a Salesforce instance for an entry with the given Name.
+2. During the *Process* stage, each Customer will be filtered depending on, if it has an existing matching Account in the Salesforce instance. The matching is performed by querying a Salesforce instance for an entry with the given Name.
 3. The next step will insert a new record into the Salesforce instance if there was none found in the previous step or update the existing one.
 
-Finally during the On Complete stage the Anypoint Template will log output statistics data into the console and send a notification email with the results.
+Finally during the *On Complete* stage the Anypoint Template will log output statistics data into the console and send a notification email with the results.
 
 
 
