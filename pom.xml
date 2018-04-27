@@ -22,7 +22,7 @@
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <classifier>mule-application-template</classifier>
+                    <classifier>mule-application</classifier>
                     <sharedLibraries>
                         <!-- Please Add shared SAP libraries -->
                     </sharedLibraries>
@@ -38,8 +38,8 @@
             <classifier>mule-plugin</classifier>
         </dependency>
         <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-sfdc-connector</artifactId>
+            <groupId>com.mulesoft.connectors</groupId>
+            <artifactId>mule-salesforce-connector</artifactId>
             <classifier>mule-plugin</classifier>
         </dependency>
         <dependency>
