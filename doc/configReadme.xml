@@ -36,7 +36,7 @@ This Anypoint template uses a few private Maven dependencies from Mulesoft in or
 In order to make this Anypoint Template run on Mule Studio there are a few extra steps that needs to be made.
 Please check this Documentation Page:
 
-+ [Enabling Your Studio Project for SAP](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP)
++ [Enabling Your Studio Project for SAP](https://docs.mulesoft.com/connectors/sap-connector#configuring-the-connector-in-studio-7)
 		]]>
 		</section>
 		<section id="application_configuration">
