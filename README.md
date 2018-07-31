@@ -127,11 +127,13 @@ Once you have imported you Anypoint Template into Anypoint Studio you need to fo
 + Complete all the properties required as per the examples in the section [Properties to be configured](#propertiestobeconfigured)
 + Once that is done, right click on you Anypoint Template project folder 
 + Hover you mouse over `"Run as"`
-+ Click on  `"Mule Application"`
++ Click on  `"Mule Application (configure)"`
++ Inside the dialog, select Environment and set the variable `"mule.env"` to the value `"dev"`
++ Click `"Run"`
 In order to make this Anypoint Template run on Mule Studio there are a few extra steps that needs to be made.
 Please check this Documentation Page:
 
-+ [Enabling Your Studio Project for SAP](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP)
++ [Enabling Your Studio Project for SAP](https://docs.mulesoft.com/connectors/sap-connector#configuring-the-connector-in-studio-7)
 
 ### Running on Mule ESB stand alone <a name="runonmuleesbstandalone"/>
 Complete all properties in one of the property files, for example in [mule.prod.properties] (../master/src/main/resources/mule.prod.properties) and run your app with the corresponding environment variable to use it. To follow the example, this will be `mule.env=prod`. 
