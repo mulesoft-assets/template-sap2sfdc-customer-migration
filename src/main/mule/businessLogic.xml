@@ -105,12 +105,12 @@ payload ++ {Id : vars.sfId}]]></ee:set-payload>
  ---
  "Migration Report: \n"
 
- ++ "\n Time [milliseconds]: " 		++ payload.elapsedTimeInMillis
- ++ "\n Total Records: "			++ payload.totalRecords
- ++ "\n Successful Records: "		++ payload.successfulRecords
- ++ "\n Failed Records: "			++ payload.failedRecords
- ++ "\n Loaded Records: "			++ payload.loadedRecords
- ++ "\n Processed Records: " 		++ payload.processedRecords]]></ee:set-payload>
+ ++ "\n Time [milliseconds]: " 		++ payload.elapsedTimeInMillis!
+ ++ "\n Total Records: "			++ payload.totalRecords!
+ ++ "\n Successful Records: "		++ payload.successfulRecords!
+ ++ "\n Failed Records: "			++ payload.failedRecords!
+ ++ "\n Loaded Records: "			++ payload.loadedRecords!
+ ++ "\n Processed Records: " 		++ payload.processedRecords!]]></ee:set-payload>
 							</ee:message>
 						</ee:transform>
 						<email:send config-ref="Gmail_SMTP" doc:name="Send migration result email" doc:id="5896eaa9-dd10-47a2-a6fc-6319b11dbd06"
