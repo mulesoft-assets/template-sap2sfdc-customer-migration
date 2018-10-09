@@ -1,31 +1,13 @@
 
 # Anypoint Template: SAP to Salesforce Customer Migration
 
-+ [License Agreement](#licenseagreement)
-+ [Use Case](#usecase)
-+ [Considerations](#considerations)
-	* [SAP Considerations](#sapconsiderations)
-	* [Salesforce Considerations](#salesforceconsiderations)
-+ [Run it!](#runit)
-	* [Running on premise](#runonopremise)
-	* [Running on Studio](#runonstudio)
-	* [Running on Mule ESB stand alone](#runonmuleesbstandalone)
-	* [Running on CloudHub](#runoncloudhub)
-	* [Deploying your Anypoint Template on CloudHub](#deployingyouranypointtemplateoncloudhub)
-	* [Properties to be configured (With examples)](#propertiestobeconfigured)
-+ [API Calls](#apicalls)
-+ [Customize It!](#customizeit)
-	* [config.xml](#configxml)
-	* [businessLogic.xml](#businesslogicxml)
-	* [endpoints.xml](#endpointsxml)
-	* [errorHandling.xml](#errorhandlingxml)
+# License Agreement
+This template is subject to the conditions of the 
+<a href="https://s3.amazonaws.com/templates-examples/AnypointTemplateLicense.pdf">MuleSoft License Agreement</a>.
+Review the terms of the license before downloading and using this template. You can use this template for free 
+with the Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
 
-
-# License Agreement <a name="licenseagreement"/>
-Note that using this template is subject to the conditions of this [License Agreement](AnypointTemplateLicense.pdf).
-Please review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule ESB Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
-
-# Use Case <a name="usecase"/>
+# Use Case
 This Anypoint Template should serve as a foundation for setting an offline migration of Customers from SAP to Salesforce Accounts.
 
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
@@ -38,7 +20,7 @@ During the *Process* stage, in the first Step the Template will go to Salesforce
 
 Finally during the *On Complete* stage the Template will both output statistics data into the console and send a notification email with the results of the batch execution.
 
-# Considerations <a name="considerations"/>
+# Considerations
 
 To make this Anypoint Template run, there are certain preconditions that must be considered.
 All of them deal with the preparations in both source (SAP) and destination (SFDC) systems, that must be made in order for all to run smoothly.
@@ -52,41 +34,30 @@ with SAP and Anypoint Studio.
 This Anypoint template uses a few private Maven dependencies from Mulesoft in order to work. If you intend to run this template with Maven support, you need to add three extra dependencies for SAP to the pom.xml file.
 
 
-## SAP Considerations <a name="sapconsiderations"/>
+## SAP Considerations
 
-There may be a few things that you need to know regarding SAP, in order for this template to work.
+Here's what you need to know to get this template to work with SAP.
 
-### As source of data
+### As a Data Source
 
-SAP backend system is used as source of data. SAP Connector is used to send and receive the data from the SAP backend. 
-The connector can either use RFC calls of BAPI functions and/or IDoc messages for data exchange and needs to be properly customized as per chapter: [Properties to be configured](#propertiestobeconfigured)
+The SAP backend system is used as a source of data. The SAP connector is used to send and receive the data from the SAP backend. 
+The connector can either use RFC calls of BAPI functions and/or IDoc messages for data exchange, and needs to be properly customized per the "Properties to Configure" section.
 
 
 
-## Salesforce Considerations <a name="salesforceconsiderations"/>
+## Salesforce Considerations
 
-There may be a few things that you need to know regarding Salesforce, in order for this template to work.
-
-In order to have this template working as expected, you should be aware of your own Salesforce field configuration.
+Here's what you need to know about Salesforce to get this template to work.
 
 ### FAQ
 
- - Where can I check that the field configuration for my Salesforce instance is the right one?
-
-    [Salesforce: Checking Field Accessibility for a Particular Field][1]
-
-- Can I modify the Field Access Settings? How?
-
-    [Salesforce: Modifying Field Access Settings][2]
+- Where can I check that the field configuration for my Salesforce instance is the right one? See: <a href="https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US">Salesforce: Checking Field Accessibility for a Particular Field</a>
+- Can I modify the Field Access Settings? How? See: <a href="https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US">Salesforce: Modifying Field Access Settings</a>
 
 
-[1]: https://help.salesforce.com/HTViewHelpDoc?id=checking_field_accessibility_for_a_particular_field.htm&language=en_US
-[2]: https://help.salesforce.com/HTViewHelpDoc?id=modifying_field_access_settings.htm&language=en_US
+### As a Data Destination
 
-
-### As destination of data
-
-There are no particular considerations for this Anypoint Template regarding Salesforce as data destination.
+There are no considerations with using Salesforce as a data destination.
 
 
 
@@ -96,60 +67,56 @@ There are no particular considerations for this Anypoint Template regarding Sale
 
 
 
-# Run it! <a name="runit"/>
+# Run it!
 Simple steps to get SAP to Salesforce Customer Migration running.
 
 
-## Running on premise <a name="runonopremise"/>
-In this section we detail the way you should run your Anypoint Template on your computer.
+## Running On Premises
+In this section we help you run your template on your computer.
 
 
-### Where to Download Mule Studio and Mule ESB
-First thing to know if you are a newcomer to Mule is where to get the tools.
+### Where to Download Anypoint Studio and the Mule Runtime
+If you are a newcomer to Mule, here is where to get the tools.
 
-+ You can download Mule Studio from this [Location](http://www.mulesoft.com/platform/mule-studio)
-+ You can download Mule ESB from this [Location](http://www.mulesoft.com/platform/soa/mule-esb-open-source-esb)
-
-
-### Importing an Anypoint Template into Studio
-Mule Studio offers several ways to import a project into the workspace, for instance: 
-
-+ Anypoint Studio Project from File System
-+ Packaged mule application (.jar)
-
-You can find a detailed description on how to do so in this [Documentation Page](http://www.mulesoft.org/documentation/display/current/Importing+and+Exporting+in+Studio).
++ [Download Anypoint Studio](https://www.mulesoft.com/platform/studio)
++ [Download Mule runtime](https://www.mulesoft.com/lp/dl/mule-esb-enterprise)
 
 
-### Running on Studio <a name="runonstudio"/>
-Once you have imported you Anypoint Template into Anypoint Studio you need to follow these steps to run it:
+### Importing a Template into Studio
+In Studio, click the Exchange X icon in the upper left of the taskbar, log in with your
+Anypoint Platform credentials, search for the template, and click **Open**.
 
-+ Locate the properties file `mule.dev.properties`, in src/main/resources
-+ Complete all the properties required as per the examples in the section [Properties to be configured](#propertiestobeconfigured)
-+ Once that is done, right click on you Anypoint Template project folder 
-+ Hover you mouse over `"Run as"`
-+ Click on  `"Mule Application (configure)"`
-+ Inside the dialog, select Environment and set the variable `"mule.env"` to the value `"dev"`
-+ Click `"Run"`
+
+### Running on Studio
+After you import your template into Anypoint Studio, follow these steps to run it:
+
++ Locate the properties file `mule.dev.properties`, in src/main/resources.
++ Complete all the properties required as per the examples in the "Properties to Configure" section.
++ Right click the template project folder.
++ Hover your mouse over `Run as`
++ Click `Mule Application (configure)`
++ Inside the dialog, select Environment and set the variable `mule.env` to the value `dev`
++ Click `Run`
 In order to make this Anypoint Template run on Mule Studio there are a few extra steps that needs to be made.
 Please check this Documentation Page:
 
 + [Enabling Your Studio Project for SAP](https://docs.mulesoft.com/connectors/sap-connector#configuring-the-connector-in-studio-7)
 
-### Running on Mule ESB stand alone <a name="runonmuleesbstandalone"/>
-Complete all properties in one of the property files, for example in [mule.prod.properties] (../master/src/main/resources/mule.prod.properties) and run your app with the corresponding environment variable to use it. To follow the example, this will be `mule.env=prod`. 
+### Running on Mule Standalone
+Complete all properties in one of the property files, for example in mule.prod.properties and run your app with the corresponding environment variable. To follow the example, this is `mule.env=prod`. 
 
 
-## Running on CloudHub <a name="runoncloudhub"/>
-While [creating your application on CloudHub](http://www.mulesoft.org/documentation/display/current/Hello+World+on+CloudHub) (Or you can do it later as a next step), you need to go to Deployment > Advanced to set all environment variables detailed in **Properties to be configured** as well as the **mule.env**.
+## Running on CloudHub
+While creating your application on CloudHub (or you can do it later as a next step), go to Runtime Manager > Manage Application > Properties to set the environment variables listed in "Properties to Configure" as well as the **mule.env**.
 
 
-### Deploying your Anypoint Template on CloudHub <a name="deployingyouranypointtemplateoncloudhub"/>
-Mule Studio provides you with really easy way to deploy your Template directly to CloudHub, for the specific steps to do so please check this [link](http://www.mulesoft.org/documentation/display/current/Deploying+Mule+Applications#DeployingMuleApplications-DeploytoCloudHub)
+### Deploying your Anypoint Template on CloudHub
+Studio provides an easy way to deploy your template directly to CloudHub, for the specific steps to do so check this
 
 
-## Properties to be configured (With examples) <a name="propertiestobeconfigured"/>
-In order to use this Mule Anypoint Template you need to configure properties (Credentials, configurations, etc.) either in properties file or in CloudHub as Environment Variables. Detail list with examples:
-### Application configuration
+## Properties to Configure
+To use this template, configure properties (credentials, configurations, etc.) in the properties file or in CloudHub from Runtime Manager > Manage Application > Properties. The sections that follow list example values.
+### Application Configuration
 **HTTP Connector configuration**
 + http.port `9090`
 
@@ -180,7 +147,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + mail.to `your.email@gmail.com`
 + mail.subject `Mail subject`
 
-# API Calls <a name="apicalls"/>
+# API Calls
 SalesForce imposes limits on the number of API Calls that can be made.
 Therefore calculating this amount may be an important factor to
 consider. Customer migration template calls to the API can be
@@ -196,26 +163,25 @@ For instance if 10 records are fetched from origin instance, then 11 api
 calls to SFDC will be made ( 1).
 
 
-# Customize It!<a name="customizeit"/>
-This brief guide intends to give a high level idea of how this Anypoint Template is built and how you can change it according to your needs.
-As mule applications are based on XML files, this page will be organized by describing all the XML that conform the Anypoint Template.
-Of course more files will be found such as Test Classes and [Mule Application Files](http://www.mulesoft.org/documentation/display/current/Application+Format), but to keep it simple we will focus on the XMLs.
+# Customize It!
+This brief guide intends to give a high level idea of how this template is built and how you can change it according to your needs.
+As Mule applications are based on XML files, this page describes the XML files used with this template.
 
-Here is a list of the main XML files you'll find in this application:
+More files are available such as test classes and Mule application files, but to keep it simple, we focus on these XML files:
 
-* [config.xml](#configxml)
-* [endpoints.xml](#endpointsxml)
-* [businessLogic.xml](#businesslogicxml)
-* [errorHandling.xml](#errorhandlingxml)
-
-
-## config.xml<a name="configxml"/>
-Configuration for Connectors and [Configuration Properties](http://www.mulesoft.org/documentation/display/current/Configuring+Properties) are set in this file. **Even you can change the configuration here, all parameters that can be modified here are in properties file, and this is the recommended place to do it so.** Of course if you want to do core changes to the logic you will probably need to modify this file.
-
-In the visual editor they can be found on the *Global Element* tab.
+* config.xml
+* businessLogic.xml
+* endpoints.xml
+* errorHandling.xml
 
 
-## businessLogic.xml<a name="businesslogicxml"/>
+## config.xml
+Configuration for connectors and configuration properties are set in this file. Even change the configuration here, all parameters that can be modified are in properties file, which is the recommended place to make your changes. However if you want to do core changes to the logic, you need to modify this file.
+
+In the Studio visual editor, the properties are on the *Global Element* tab.
+
+
+## businessLogic.xml
 Functional aspect of the Anypoint Template is implemented on this XML, directed by a batch job that will be responsible for creations/updates. The several message processors constitute four high level actions that fully implement the logic of this Anypoint Template:
 
 1. Job execution is invoked from triggerFlow (endpoints.xml).
@@ -226,7 +192,7 @@ Finally during the *On Complete* stage the Anypoint Template will log output sta
 
 
 
-## endpoints.xml<a name="endpointsxml"/>
+## endpoints.xml
 This is the file where you will found the inbound and outbound sides of your integration app.
 This Template has a [HTTP Listener Connector](http://www.mulesoft.org/documentation/display/current/HTTP+Listener+Connector) as the way to trigger the use case.
 
@@ -239,9 +205,10 @@ This Template has a [HTTP Listener Connector](http://www.mulesoft.org/documentat
 
 
 
-## errorHandling.xml<a name="errorhandlingxml"/>
-This is the right place to handle how your integration will react depending on the different exceptions. 
-This file holds a [Error Handling](http://www.mulesoft.org/documentation/display/current/Error+Handling) that is referenced by the main flow in the business logic.
+## errorHandling.xml
+This is the right place to handle how your integration reacts depending on the different exceptions. 
+This file provides error handling that is referenced by the main flow in the business logic.
+
 
 
 
