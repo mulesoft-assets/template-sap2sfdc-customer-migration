@@ -13,49 +13,7 @@ http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
 
 	<flow name="businessLogicFlow" doc:id="884f86c5-66e1-4701-bb9b-594c2a60abf3">
-		<ee:transform doc:name="Set XML input" doc:id="66c3322d-2e92-4ac9-b158-a6bfe30fd355">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/xml
----
-{
-  "BAPI_CUSTOMER_GETLIST": {
-    "import": {
-      "MAXROWS": "5"
-    },
-    "tables": {
-      "IDRANGE": {
-        "row": {
-          "SIGN": "I",
-          "OPTION": "CP",
-          "LOW": "*",
-          "HIGH": null
-        }
-      }
-    }
-  }
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<sap:execute-synchronous-remote-function-call key="BAPI_CUSTOMER_GETLIST"
-			doc:name="Query customers from SAP" doc:id="01a003d3-14cc-4fe9-85e5-0f11e9787b75" config-ref="SAP_Outbound" />
-		<ee:transform doc:name="Convert SAP response to Salesforce Account" doc:id="54b7b34d-7293-4b38-8651-086f42d85a3c">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-payload.BAPI_CUSTOMER_GETLIST.tables.ADDRESSDATA.*row map
-{
-	//removed single quote as the Salesforce query will then crash
-	Name : $.NAME replace /(\')/ with " ",
-	BillingCity : $.CITY,
-	BillingCountry : $.COUNTRY,
-	BillingPostalCode : $.POSTL_COD1,
-	BillingStreet : $.STREET,
-	Phone : $.TEL1_NUMBR
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
+		<flow-ref doc:name="Call getSAPCustomerSubFlow" doc:id="fac223ff-59ab-4f90-a2ae-36da0d88b50e" name="getSAPCustomerSubFlow"/>
 		<batch:job jobName="migrateAccountsBatch" doc:id="79b373e6-1aeb-43a9-9dfe-8ac0d2f31fdc">
 			<batch:process-records>
 				<batch:step name="getAccountInSalesforceStep" doc:id="232087de-e311-49c1-a890-439c65ea1af2">
@@ -124,6 +82,50 @@ payload ++ {Id : vars.sfId}]]></ee:set-payload>
 			</batch:on-complete>
 		</batch:job>
 	</flow>
+	<sub-flow name="getSAPCustomerSubFlow" doc:id="cc7bf188-3766-40d0-bcad-37e5d741246c" >
+		<ee:transform doc:name="Set XML input" doc:id="66c3322d-2e92-4ac9-b158-a6bfe30fd355">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+  "BAPI_CUSTOMER_GETLIST": {
+    "import": {
+      "MAXROWS": "${sap.maxrows}"
+    },
+    "tables": {
+      "IDRANGE": {
+        "row": {
+          "SIGN": "I",
+          "OPTION": "CP",
+          "LOW": "*",
+          "HIGH": null
+        }
+      }
+    }
+  }
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<sap:execute-synchronous-remote-function-call key="BAPI_CUSTOMER_GETLIST" doc:name="Query customers from SAP" doc:id="01a003d3-14cc-4fe9-85e5-0f11e9787b75" config-ref="SAP_Outbound" />
+		<ee:transform doc:name="Convert SAP response to Salesforce Account" doc:id="54b7b34d-7293-4b38-8651-086f42d85a3c">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload.BAPI_CUSTOMER_GETLIST.tables.ADDRESSDATA.*row map
+{
+	//removed single quote as the Salesforce query will then crash
+	Name : $.NAME replace /(\')/ with " ",
+	BillingCity : $.CITY,
+	BillingCountry : $.COUNTRY,
+	BillingPostalCode : $.POSTL_COD1,
+	BillingStreet : $.STREET,
+	Phone : $.TEL1_NUMBR
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
 	<flow name="mainFlow" doc:id="7c0a5bef-b3d5-442f-bff3-10d038f69a5e">
 		<flow-ref doc:name="businessLogicFlow" doc:id="91360ede-4d71-44c7-9b64-8ee762e04ea0"
 			name="businessLogicFlow" />

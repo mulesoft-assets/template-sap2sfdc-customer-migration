@@ -1,7 +1,7 @@
 
 # Template: SAP to Salesforce Customer Migration
 
-This template moves a large set of customers or accounts from SAP to Salesforce. Trigger with an HTTP call either manually or programmatically. 
+This template moves a large set of customers or accounts from SAP to Salesforce. Trigger with an HTTP call either manually or programmatically.
 
 Accounts are upserted so that the migration can be run multiple times without worrying about creating duplicates. This template uses the Mule batch module to make moving a large set of data easier and more transparent.
 
@@ -84,7 +84,7 @@ After you import your template into Anypoint Studio, follow these steps to run i
 + Click `Run`. To make this template run on Studio there are a few extra steps that needs to be made. You can check this documentation page [Enabling Your Studio Project for SAP](https://docs.mulesoft.com/connectors/sap-connector#configuring-the-connector-in-studio-7)
 
 ### Running on Mule Standalone
-Complete all properties in one of the property files, for example in mule.prod.properties and run your app with the corresponding environment variable. To follow the example, this is `mule.env=prod`. 
+Complete all properties in one of the property files, for example in mule.prod.properties and run your app with the corresponding environment variable. To follow the example, this is `mule.env=prod`.
 
 
 ## Running on CloudHub
@@ -112,6 +112,9 @@ To use this template, configure properties (credentials, configurations, etc.) i
 + sap.jco.sysnr `14`
 + sap.jco.client `800`
 + sap.jco.lang `EN`
+
+**Maximal number of customers from SAP**
++ sap.maxrows `20`
 
 **SalesForce Connector Configuration**
 + sfdc.username `bob.dylan@sfdc`
