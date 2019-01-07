@@ -55,6 +55,9 @@ Please check this Documentation Page:
 + sap.jco.client `800`
 + sap.jco.lang `EN`
 
+**Maximal number of customers from SAP**
++ sap.maxrows `20`
+
 **SalesForce Connector configuration**
 + sfdc.username `bob.dylan@sfdc`
 + sfdc.password `DylanPassword123`
