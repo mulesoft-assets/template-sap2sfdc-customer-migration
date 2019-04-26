@@ -7,7 +7,7 @@
         <artifactId>templates-tooling-parent-pom</artifactId>
         <version>2.1.14</version>
     </parent>
-    
+
     <artifactId>template-sap2sfdc-customer-migration</artifactId>
     <version>2.1.2-SNAPSHOT</version>
     <packaging>mule-application</packaging>
@@ -99,6 +99,12 @@
             <id>anypoint-exchange</id>
             <name>Anypoint Exchange</name>
             <url>https://maven.anypoint.mulesoft.com/api/v1/maven</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>https://repository.mulesoft.org/releases/</url>
             <layout>default</layout>
         </repository>
     </repositories>
