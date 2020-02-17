@@ -17,9 +17,9 @@
 	<configuration-properties file="common.properties" doc:id="dffa4da7-cc5c-4ecb-922e-1115b4387354" doc:name="Configuration properties" />
 	<configuration-properties file="mule.${mule.env}.properties" doc:id="674beef8-9485-40a7-99b9-0685c9b7e863" doc:name="Configuration properties" />
 
-	<sap:outbound-config name="SAP_Outbound" doc:id="48dfbdb9-3683-42fb-804c-b9267772fe72" doc:name="SAP Outbound">
+	<sap:sap-config name="SAP_Config" doc:id="48dfbdb9-3683-42fb-804c-b9267772fe72" doc:name="SAP Config">
 		<sap:simple-connection-provider-connection applicationServerHost="${sap.jco.ashost}" client="${sap.jco.client}" language="${sap.jco.lang}" password="${sap.jco.passwd}" systemNumber="${sap.jco.sysnr}" username="${sap.jco.user}" />
-	</sap:outbound-config>
+	</sap:sap-config>
 
 	<salesforce:sfdc-config name="Salesforce" doc:id="6d1b2099-7302-43c0-b81d-dafffc0942e0" doc:name="Salesforce Sfdc config">
 		<salesforce:basic-connection password="${sfdc.password}" securityToken="${sfdc.securityToken}" username="${sfdc.username}" />
