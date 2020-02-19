@@ -76,9 +76,9 @@ output application/java
 				doc:id="261627e9-9ff1-40e3-a218-b550195f4daa" engine="Groovy">
 				<scripting:code>sleep(10000)</scripting:code>
 			</scripting:execute>
-			<salesforce:query
-				doc:name="Query record should be created in Salesforce" doc:id="d6c95c7f-e83b-493a-9cd3-4130a862846a"
-				config-ref="Salesforce" target="resultCreated">
+			<salesforce:query doc:name="Query record should be created in Salesforce"
+				doc:id="d6c95c7f-e83b-493a-9cd3-4130a862846a" config-ref="Salesforce"
+				target="resultCreated">
 				<salesforce:salesforce-query>SELECT Id, Name FROM Account WHERE Name
 					= ':name'</salesforce:salesforce-query>
 				<salesforce:parameters><![CDATA[#[output application/java

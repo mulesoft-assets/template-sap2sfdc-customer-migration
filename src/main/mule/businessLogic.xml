@@ -45,9 +45,9 @@ payload ++ {Id : vars.sfId}]]></ee:set-payload>
 				<batch:step name="upsertAccountsInSalesforceStep" doc:id="78a74ab4-9b91-416d-985a-acda2ac377eb">
 					<batch:aggregator doc:name="Batch Aggregator"
 						doc:id="1ad86a98-643e-494a-a90a-32daab0b03cc" size="${page.size}">
-						<salesforce:upsert type="Account"
-							doc:name="Upsert accounts in Salesforce" doc:id="96741a5e-cb61-4b5d-8772-e741a0ae89e0"
-							config-ref="Salesforce" externalIdFieldName="Id" />
+						<salesforce:upsert doc:name="Upsert accounts in Salesforce"
+							doc:id="96741a5e-cb61-4b5d-8772-e741a0ae89e0" config-ref="Salesforce"
+							externalIdFieldName="Id" objectType="Account" />
 						<logger level="INFO" doc:name="Log result"
 							doc:id="35671617-81db-4af8-82e6-4f94bb0c80ff" message="Upsert result: [output application/json --- payload]" />
 					</batch:aggregator>
