@@ -19,7 +19,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 		<batch:job jobName="migrateAccountsBatch" doc:id="79b373e6-1aeb-43a9-9dfe-8ac0d2f31fdc">
 			<batch:process-records>
 				<batch:step name="getAccountInSalesforceStep" doc:id="232087de-e311-49c1-a890-439c65ea1af2">
-					<salesforce:query-single doc:name="Query Salesforce for current Account"
+					<salesforce:query doc:name="Query Salesforce for current Account"
 						doc:id="1d45c49f-a2e4-4935-8393-8d13ea495d37" config-ref="Salesforce"
 						target="sfId" targetValue="#[payload.Id]">
 						<salesforce:salesforce-query>SELECT Id FROM Account WHERE Name =
@@ -31,7 +31,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 	"name" : payload.Name
 }]]]>
 						</salesforce:parameters>
-					</salesforce:query-single>
+					</salesforce:query>
 					<ee:transform doc:name="Set Id from matching account"
 						doc:id="70cea1e4-f95a-4780-ac2b-d8ab46cbda99">
 						<ee:message>
