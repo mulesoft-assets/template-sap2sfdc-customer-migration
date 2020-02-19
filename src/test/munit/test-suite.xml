@@ -124,7 +124,7 @@ vars.sfdcIds + vars.resultCreated.Id]]></ee:set-variable>
 		description="After tests actions" doc:id="6e33c171-6b28-48fd-ac13-44b43e1cf18a">
 		<salesforce:delete doc:name="Delete test Accounts from Salesforce"
 			doc:id="0fa21617-1080-4fa2-87e2-1255c0f0b314" config-ref="Salesforce">
-			<salesforce:delete-ids><![CDATA[#[vars.sfdcIds]]]></salesforce:delete-ids>
+			<salesforce:ids><![CDATA[#[vars.sfdcIds]]]></salesforce:ids>
 		</salesforce:delete>
 	</munit:after-test>
 
