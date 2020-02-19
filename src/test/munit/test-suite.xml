@@ -61,8 +61,10 @@ output application/java
 		<salesforce:create doc:name="Create Account in Salesforce"
 			doc:id="829bff76-940c-48de-8be2-00f11f2d535e" config-ref="Salesforce"
 			type="Account" />
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="c6a5c846-fed8-49d4-ae3c-7bc26cabd07a" message="start2" />
 		<set-variable value="#[payload map ($.id)]" doc:name="Store IDs to variable sfdcIds"
 			doc:id="d855c0f2-61d5-47ba-9b76-b5c5b834e0ca" variableName="sfdcIds" />
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="38e9f3ff-88d3-4b07-9f7d-80223aaff60f" message="start3" />
 		<munit-tools:mock-when doc:name="Mock email processor to avoid sending email"
 			doc:id="d310a4f9-0e64-49ed-a2e5-394c667c012e" processor="email:send">
 			<munit-tools:then-return />
@@ -88,6 +90,7 @@ output application/java
 	"name" : vars.testDataCreate.Name
 }]]]></salesforce:parameters>
 			</salesforce:query>
+			<logger level="INFO" doc:name="Copy_of_Logger" doc:id="299ac9c7-5662-459e-84be-df69ee979ac9" message="start4" />
 			<ee:transform doc:name="Store ID to variable sfdcIds"
 				doc:id="373d3b13-5432-4d99-8c01-ebbfa3effdf4">
 				<ee:message>
@@ -110,6 +113,7 @@ vars.sfdcIds + vars.resultCreated.Id]]></ee:set-variable>
 	"name" : vars.testDataUpdate.Name
 }]]]></salesforce:parameters>
 			</salesforce:query>
+			<logger level="INFO" doc:name="Copy_of_Logger" doc:id="e8b8ee78-6c77-46e8-81e1-c7966d70aa32" message="start5" />
 		</munit:execution>
 		<munit:validation>
 			<munit-tools:assert-that
