@@ -60,6 +60,7 @@ output application/java
 		<salesforce:create doc:name="Create Account in Salesforce"
 			doc:id="829bff76-940c-48de-8be2-00f11f2d535e" config-ref="Salesforce"
 			type="Account" />
+		<logger level="INFO" doc:name="test" doc:id="8d53e7b2-4dc0-458a-bf67-94aa3366ba46" message="test"/>
 		<set-variable value="#[payload map ($.id)]" doc:name="Store IDs to variable sfdcIds"
 			doc:id="d855c0f2-61d5-47ba-9b76-b5c5b834e0ca" variableName="sfdcIds" />
 		<munit-tools:mock-when doc:name="Mock email processor to avoid sending email"
@@ -87,6 +88,7 @@ output application/java
 	"name" : vars.testDataCreate.Name
 }]]]></salesforce:parameters>
 			</salesforce:query>
+			<logger level="INFO" doc:name="test2" doc:id="049f49da-0572-436f-815a-79bec852bd10" message="test2"/>
 			<ee:transform doc:name="Store ID to variable sfdcIds"
 				doc:id="373d3b13-5432-4d99-8c01-ebbfa3effdf4">
 				<ee:message>
@@ -109,6 +111,7 @@ vars.sfdcIds + vars.resultCreated.Id]]></ee:set-variable>
 	"name" : vars.testDataUpdate.Name
 }]]]></salesforce:parameters>
 			</salesforce:query>
+			<logger level="INFO" doc:name="test3" doc:id="ee434f84-3115-4a62-854f-95a03ca922fc" message="test3"/>
 		</munit:execution>
 		<munit:validation>
 			<munit-tools:assert-that
@@ -126,6 +129,7 @@ vars.sfdcIds + vars.resultCreated.Id]]></ee:set-variable>
 			doc:id="0fa21617-1080-4fa2-87e2-1255c0f0b314" config-ref="Salesforce">
 			<salesforce:ids><![CDATA[#[vars.sfdcIds]]]></salesforce:ids>
 		</salesforce:delete>
+		<logger level="INFO" doc:name="test4" doc:id="72a32bf0-8ce7-4865-bb0a-79cbe3f08573" message="test4"/>
 	</munit:after-test>
 
 </mule>
