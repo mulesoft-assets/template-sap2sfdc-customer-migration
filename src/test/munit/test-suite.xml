@@ -76,7 +76,7 @@ output application/java
 				doc:id="261627e9-9ff1-40e3-a218-b550195f4daa" engine="Groovy">
 				<scripting:code>sleep(10000)</scripting:code>
 			</scripting:execute>
-			<salesforce:query-single
+			<salesforce:query
 				doc:name="Query record should be created in Salesforce" doc:id="d6c95c7f-e83b-493a-9cd3-4130a862846a"
 				config-ref="Salesforce" target="resultCreated">
 				<salesforce:salesforce-query>SELECT Id, Name FROM Account WHERE Name
@@ -86,7 +86,7 @@ output application/java
 {
 	"name" : vars.testDataCreate.Name
 }]]]></salesforce:parameters>
-			</salesforce:query-single>
+			</salesforce:query>
 			<ee:transform doc:name="Store ID to variable sfdcIds"
 				doc:id="373d3b13-5432-4d99-8c01-ebbfa3effdf4">
 				<ee:message>
@@ -98,7 +98,7 @@ output application/java
 vars.sfdcIds + vars.resultCreated.Id]]></ee:set-variable>
 				</ee:variables>
 			</ee:transform>
-			<salesforce:query-single
+			<salesforce:query
 				doc:name="Query record should be updated in Salesforce" doc:id="54c64c79-da81-4ef5-b9d7-3c5dea2a2dfb"
 				config-ref="Salesforce" target="resultUpdated">
 				<salesforce:salesforce-query>SELECT Id, Name, BillingCountry FROM
@@ -108,7 +108,7 @@ vars.sfdcIds + vars.resultCreated.Id]]></ee:set-variable>
 {
 	"name" : vars.testDataUpdate.Name
 }]]]></salesforce:parameters>
-			</salesforce:query-single>
+			</salesforce:query>
 		</munit:execution>
 		<munit:validation>
 			<munit-tools:assert-that
