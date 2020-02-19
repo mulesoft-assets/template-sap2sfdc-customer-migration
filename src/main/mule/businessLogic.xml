@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:sap="http://www.mulesoft.org/schema/mule/sap"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
-	xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
@@ -13,13 +14,14 @@ http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
 
 	<flow name="businessLogicFlow" doc:id="884f86c5-66e1-4701-bb9b-594c2a60abf3">
-		<flow-ref doc:name="Call getSAPCustomerSubFlow" doc:id="fac223ff-59ab-4f90-a2ae-36da0d88b50e" name="getSAPCustomerSubFlow"/>
+		<flow-ref doc:name="Call getSAPCustomerSubFlow" doc:id="fac223ff-59ab-4f90-a2ae-36da0d88b50e"
+			name="getSAPCustomerSubFlow" />
 		<batch:job jobName="migrateAccountsBatch" doc:id="79b373e6-1aeb-43a9-9dfe-8ac0d2f31fdc">
 			<batch:process-records>
 				<batch:step name="getAccountInSalesforceStep" doc:id="232087de-e311-49c1-a890-439c65ea1af2">
 					<salesforce:query-single doc:name="Query Salesforce for current Account"
-						doc:id="1d45c49f-a2e4-4935-8393-8d13ea495d37" config-ref="Salesforce" target="sfId"
-						targetValue="#[payload.Id]">
+						doc:id="1d45c49f-a2e4-4935-8393-8d13ea495d37" config-ref="Salesforce"
+						target="sfId" targetValue="#[payload.Id]">
 						<salesforce:salesforce-query>SELECT Id FROM Account WHERE Name =
 							':name'
 						</salesforce:salesforce-query>
@@ -30,7 +32,8 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 }]]]>
 						</salesforce:parameters>
 					</salesforce:query-single>
-					<ee:transform doc:name="Set Id from matching account" doc:id="70cea1e4-f95a-4780-ac2b-d8ab46cbda99">
+					<ee:transform doc:name="Set Id from matching account"
+						doc:id="70cea1e4-f95a-4780-ac2b-d8ab46cbda99">
 						<ee:message>
 							<ee:set-payload><![CDATA[%dw 2.0
 output application/java
@@ -40,23 +43,26 @@ payload ++ {Id : vars.sfId}]]></ee:set-payload>
 					</ee:transform>
 				</batch:step>
 				<batch:step name="upsertAccountsInSalesforceStep" doc:id="78a74ab4-9b91-416d-985a-acda2ac377eb">
-					<batch:aggregator doc:name="Batch Aggregator" doc:id="1ad86a98-643e-494a-a90a-32daab0b03cc"
-						size="${page.size}">
-						<salesforce:upsert type="Account" doc:name="Upsert accounts in Salesforce"
-							doc:id="96741a5e-cb61-4b5d-8772-e741a0ae89e0" config-ref="Salesforce" externalIdFieldName="Id" />
-						<logger level="INFO" doc:name="Log result" doc:id="35671617-81db-4af8-82e6-4f94bb0c80ff"
-							message="Upsert result: [output application/json --- payload]" />
+					<batch:aggregator doc:name="Batch Aggregator"
+						doc:id="1ad86a98-643e-494a-a90a-32daab0b03cc" size="${page.size}">
+						<salesforce:upsert type="Account"
+							doc:name="Upsert accounts in Salesforce" doc:id="96741a5e-cb61-4b5d-8772-e741a0ae89e0"
+							config-ref="Salesforce" externalIdFieldName="Id" />
+						<logger level="INFO" doc:name="Log result"
+							doc:id="35671617-81db-4af8-82e6-4f94bb0c80ff" message="Upsert result: [output application/json --- payload]" />
 					</batch:aggregator>
 				</batch:step>
 			</batch:process-records>
 			<batch:on-complete>
-				<scatter-gather doc:name="All" doc:id="ef2964ef-0b85-4c6c-a5ee-b834df639e7b">
+				<scatter-gather doc:name="All"
+					doc:id="ef2964ef-0b85-4c6c-a5ee-b834df639e7b">
 					<route>
-						<logger level="INFO" doc:name="Migration process has finished!" doc:id="b7575d38-7dbd-4602-9186-1bbb25234896"
-							message="Migration process has finished!" />
+						<logger level="INFO" doc:name="Migration process has finished!"
+							doc:id="b7575d38-7dbd-4602-9186-1bbb25234896" message="Migration process has finished!" />
 					</route>
 					<route>
-						<ee:transform doc:name="Prepare migration result email" doc:id="c84b4bc4-5a65-41c1-9d0c-f1ebd3d8db7a">
+						<ee:transform doc:name="Prepare migration result email"
+							doc:id="c84b4bc4-5a65-41c1-9d0c-f1ebd3d8db7a">
 							<ee:message>
 								<ee:set-payload><![CDATA[%dw 2.0
  output text/plain
@@ -71,8 +77,9 @@ payload ++ {Id : vars.sfId}]]></ee:set-payload>
  ++ "\n Processed Records: " 		++ payload.processedRecords!]]></ee:set-payload>
 							</ee:message>
 						</ee:transform>
-						<email:send config-ref="Gmail_SMTP" doc:name="Send migration result email" doc:id="5896eaa9-dd10-47a2-a6fc-6319b11dbd06"
-							fromAddress="${mail.from}" subject="${mail.subject}">
+						<email:send config-ref="Gmail_SMTP" doc:name="Send migration result email"
+							doc:id="5896eaa9-dd10-47a2-a6fc-6319b11dbd06" fromAddress="${mail.from}"
+							subject="${mail.subject}">
 							<email:to-addresses>
 								<email:to-address value="${mail.to}" />
 							</email:to-addresses>
@@ -82,8 +89,9 @@ payload ++ {Id : vars.sfId}]]></ee:set-payload>
 			</batch:on-complete>
 		</batch:job>
 	</flow>
-	<sub-flow name="getSAPCustomerSubFlow" doc:id="cc7bf188-3766-40d0-bcad-37e5d741246c" >
-		<ee:transform doc:name="Set XML input" doc:id="66c3322d-2e92-4ac9-b158-a6bfe30fd355">
+	<sub-flow name="getSAPCustomerSubFlow" doc:id="cc7bf188-3766-40d0-bcad-37e5d741246c">
+		<ee:transform doc:name="Set XML input"
+			doc:id="66c3322d-2e92-4ac9-b158-a6bfe30fd355">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/xml
@@ -107,8 +115,10 @@ output application/xml
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<sap:execute-synchronous-remote-function-call key="BAPI_CUSTOMER_GETLIST" doc:name="Query customers from SAP" doc:id="01a003d3-14cc-4fe9-85e5-0f11e9787b75" config-ref="SAP_Outbound" />
-		<ee:transform doc:name="Convert SAP response to Salesforce Account" doc:id="54b7b34d-7293-4b38-8651-086f42d85a3c">
+		<sap:sync-rfc key="BAPI_CUSTOMER_GETLIST" doc:name="Query customers from SAP"
+			doc:id="b7eb274d-e6ba-4368-8341-10d493cbb9ad" config-ref="SAP_Config" />
+		<ee:transform doc:name="Convert SAP response to Salesforce Account"
+			doc:id="54b7b34d-7293-4b38-8651-086f42d85a3c">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -130,8 +140,9 @@ payload.BAPI_CUSTOMER_GETLIST.tables.ADDRESSDATA.*row map
 		<flow-ref doc:name="businessLogicFlow" doc:id="91360ede-4d71-44c7-9b64-8ee762e04ea0"
 			name="businessLogicFlow" />
 		<error-handler>
-			<on-error-propagate enableNotifications="true" logException="true"
-				doc:name="On Error Propagate" doc:id="488b507d-e26c-4c56-8759-8bb4f6645d71" type="ANY">
+			<on-error-propagate enableNotifications="true"
+				logException="true" doc:name="On Error Propagate" doc:id="488b507d-e26c-4c56-8759-8bb4f6645d71"
+				type="ANY">
 				<flow-ref doc:name="errorHandlingFlow" doc:id="afdaf73c-0137-4d60-84f6-5c41234771a3"
 					name="errorHandlingFlow" />
 			</on-error-propagate>
