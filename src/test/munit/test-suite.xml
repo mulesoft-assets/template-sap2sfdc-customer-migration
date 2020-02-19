@@ -58,10 +58,11 @@ output application/java
 
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="0d916ce0-d582-46bb-b681-eacf78dd20a6" message="start" />
+		<logger level="INFO" doc:name="Logger" doc:id="744bd1a6-195d-46b6-9138-a852bbb0680f" message="#[output application/json --- payload]"/>
 		<salesforce:create doc:name="Create Account in Salesforce"
 			doc:id="829bff76-940c-48de-8be2-00f11f2d535e" config-ref="Salesforce"
 			type="Account" />
-		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="c6a5c846-fed8-49d4-ae3c-7bc26cabd07a" message="inak sa to pise" />
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="c6a5c846-fed8-49d4-ae3c-7bc26cabd07a" message="#[output application/json --- payload]" />
 		<set-variable value="#[payload map ($.id)]" doc:name="Store IDs to variable sfdcIds"
 			doc:id="d855c0f2-61d5-47ba-9b76-b5c5b834e0ca" variableName="sfdcIds" />
 		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="38e9f3ff-88d3-4b07-9f7d-80223aaff60f" message="start3" />
